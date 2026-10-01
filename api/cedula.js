@@ -19,16 +19,22 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método no permitido.' });
   }
 
-  const { nacionalidad, cedula } = req.query;
+  const { nacionalidad, cedula, cf_token } = req.query;
 
   // Validación de parámetros
   if (!nacionalidad || !cedula) {
     return res.status(400).json({ error: 'Nacionalidad y Cédula son requeridas.' });
   }
 
-  // Lectura de variables de entorno seguras
+  if (!cf_token) {
+    return res.status(400).json({ error: 'El Captcha es obligatorio.' });
+  }
+
+  // Claves de entorno
   const appId = process.env.CEDULA_APP_ID;
   const token = process.env.CEDULA_TOKEN;
+  // Fallback a la clave estática si no está en las variables (aunque es mejor usar process.env)
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY || '0x4AAAAAAFLZ3PH1xtAm_ulNBWqyOdE9xfk';
 
   if (!appId || !token) {
     console.error('Faltan variables de entorno CEDULA_APP_ID o CEDULA_TOKEN');
@@ -36,6 +42,28 @@ export default async function handler(req, res) {
   }
 
   try {
+    // 1. Validar Captcha Turnstile
+    const verifyFormData = new URLSearchParams();
+    verifyFormData.append('secret', turnstileSecret);
+    verifyFormData.append('response', cf_token);
+    
+    // Obtener la IP del cliente (Opcional pero recomendado para Turnstile)
+    const clientIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress;
+    if (clientIp) {
+      verifyFormData.append('remoteip', clientIp);
+    }
+
+    const turnstileVerify = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: verifyFormData
+    });
+    const turnstileData = await turnstileVerify.json();
+
+    if (!turnstileData.success) {
+      return res.status(403).json({ error: 'Fallo de verificación humana (Captcha).' });
+    }
+
+    // 2. Si el Captcha es válido, consultar a la API de cédulas
     // La API externa requiere app_id y token en la URL (query string)
     const apiUrl = `https://api.cedula.com.ve/api/v1?app_id=${appId}&token=${token}&nacionalidad=${nacionalidad}&cedula=${cedula}`;
     
