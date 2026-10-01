@@ -191,9 +191,12 @@
                 // Se asume que la data viene en data.data o directamente en data
                 const personal = data.data || data; 
                 
-                // Rellenar Datos Personales
-                document.getElementById('resNombres').textContent = personal.nombres || personal.primer_nombre || 'No disponible';
-                document.getElementById('resApellidos').textContent = personal.apellidos || personal.primer_apellido || 'No disponible';
+                // Rellenar Datos Personales (Manejo robusto para nombres dobles o vacíos)
+                const nombres = [personal.primer_nombre, personal.segundo_nombre].filter(Boolean).join(' ') || personal.nombres || 'No disponible';
+                const apellidos = [personal.primer_apellido, personal.segundo_apellido].filter(Boolean).join(' ') || personal.apellidos || 'No disponible';
+
+                document.getElementById('resNombres').textContent = nombres;
+                document.getElementById('resApellidos').textContent = apellidos;
                 document.getElementById('resCedula').textContent = `${nacionalidad}-${cedula}`;
                 document.getElementById('resRif').textContent = personal.rif || 'No disponible';
 
