@@ -6,6 +6,8 @@
     <title>Consulta Cédula Venezuela</title>
     <link rel="icon" type="image/jpeg" href="/icono.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Script de Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         .spinner {
             border: 3px solid rgba(255, 255, 255, 0.3);
@@ -27,6 +29,7 @@
     <main class="flex-grow flex items-center justify-center p-4">
         <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
             <div class="bg-blue-700 p-6 text-center">
+                <img src="/icono.jpg" alt="Logo Consulta Segura" class="w-20 h-20 mx-auto mb-4 rounded-full border-4 border-blue-500 shadow-lg object-cover">
                 <h1 class="text-2xl font-bold text-white">Consulta de Cédula</h1>
                 <p class="text-blue-100 mt-2 text-sm">Verificación segura de identidad</p>
             </div>
@@ -47,6 +50,11 @@
                         </div>
                     </div>
                     
+                    <!-- Turnstile Widget -->
+                    <div class="flex justify-center my-3">
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAFLZ3HumaAkX9IYJ" data-theme="light"></div>
+                    </div>
+
                     <button type="submit" id="submitBtn" class="w-full bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-blue-800 transition duration-200 flex justify-center items-center">
                         <span id="btnText">Consultar</span>
                         <div id="btnSpinner" class="spinner hidden ml-2"></div>
@@ -155,6 +163,11 @@
             
             const nacionalidad = document.getElementById('nacionalidad').value;
             const cedula = document.getElementById('cedula').value;
+            
+            // Obtener el token del Captcha generado por Turnstile
+            const cfTokenInput = document.querySelector('[name="cf-turnstile-response"]');
+            const cf_token = cfTokenInput ? cfTokenInput.value : '';
+
             const submitBtn = document.getElementById('submitBtn');
             const btnText = document.getElementById('btnText');
             const btnSpinner = document.getElementById('btnSpinner');
@@ -169,9 +182,19 @@
             submitBtn.disabled = true;
             submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
 
+            if (!cf_token) {
+                errorMessage.textContent = 'Por favor, resuelve el Captcha antes de continuar.';
+                errorMessage.classList.remove('hidden');
+                btnText.textContent = 'Consultar';
+                btnSpinner.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                return;
+            }
+
             try {
-                // Petición a la Serverless Function (ruta relativa para Vercel)
-                const apiUrl = `/api/cedula?nacionalidad=${nacionalidad}&cedula=${cedula}`;
+                // Petición a la Serverless Function enviando el token del captcha
+                const apiUrl = `/api/cedula?nacionalidad=${nacionalidad}&cedula=${cedula}&cf_token=${cf_token}`;
                 
                 const response = await fetch(apiUrl);
                 
@@ -223,6 +246,10 @@
                 errorMessage.textContent = error.message || 'Fallo de conexión. Intente más tarde.';
                 errorMessage.classList.remove('hidden');
             } finally {
+                // Resetea el widget del Captcha para permitir nuevas consultas
+                if (typeof turnstile !== 'undefined') {
+                    turnstile.reset();
+                }
                 btnText.textContent = 'Consultar';
                 btnSpinner.classList.add('hidden');
                 submitBtn.disabled = false;
