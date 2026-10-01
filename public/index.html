@@ -4,7 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta Cédula Venezuela</title>
+    
+    <!-- Meta Etiquetas Básicas -->
+    <meta name="description" content="Consulta pública de datos de identidad y registro electoral en Venezuela de forma segura.">
     <link rel="icon" type="image/jpeg" href="/icono.jpg">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://consulta-cedula-ve.vercel.app/">
+    <meta property="og:title" content="Consulta Cédula Venezuela">
+    <meta property="og:description" content="Verifica datos personales y electorales de forma rápida y segura.">
+    <meta property="og:image" content="https://consulta-cedula-ve.vercel.app/icono.jpg">
+
+    <!-- Twitter / X -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://consulta-cedula-ve.vercel.app/">
+    <meta property="twitter:title" content="Consulta Cédula Venezuela">
+    <meta property="twitter:description" content="Verifica datos personales y electorales de forma rápida y segura.">
+    <meta property="twitter:image" content="https://consulta-cedula-ve.vercel.app/icono.jpg">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Script de Cloudflare Turnstile -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -107,6 +125,7 @@
             <a href="/GPL.md" target="_blank" class="hover:text-blue-700 underline">Licencia GPL</a>
         </div>
         <p>&copy; 2026 Consulta Segura. Todos los derechos reservados.</p>
+        <p class="mt-2 text-xs">Diseñado y desarrollado por <a href="https://ejavierds.vercel.app" target="_blank" class="text-blue-600 hover:text-blue-800 hover:underline font-bold">@ejavierds</a></p>
     </footer>
 
     <!-- Modals -->
@@ -118,10 +137,10 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <div class="text-sm text-gray-600 max-h-60 overflow-y-auto mb-4 space-y-2">
-                <p>El uso de esta herramienta está destinado exclusivamente para la consulta personal de datos públicos de identidad en Venezuela.</p>
-                <p>No nos hacemos responsables por el mal uso de la información obtenida. El servicio se provee "tal cual" sin garantías de ningún tipo.</p>
-                <p>Usted acepta no utilizar este servicio para fines ilegales o malintencionados.</p>
+            <div class="text-sm text-gray-600 max-h-60 overflow-y-auto mb-4 space-y-3">
+                <p>El uso de esta herramienta está destinado exclusivamente para la consulta personal de datos públicos de identidad en Venezuela, mediante la API de terceros <em>cedula.com.ve</em>.</p>
+                <p>Al utilizar este sistema, usted se compromete a no realizar minería de datos, ataques automatizados o cualquier actividad que comprometa el servicio. Empleamos mecanismos de Captcha para mitigar bots.</p>
+                <p>El desarrollador (@ejavierds) no se hace responsable por la veracidad, actualización o mal uso de la información mostrada. El servicio se ofrece "tal cual" y puede ser interrumpido si el proveedor original cambia su infraestructura.</p>
             </div>
             <button onclick="toggleModal('termsModal')" class="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition">Entendido</button>
         </div>
@@ -135,10 +154,10 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <div class="text-sm text-gray-600 max-h-60 overflow-y-auto mb-4 space-y-2">
-                <p>Esta aplicación no almacena, comparte ni comercializa los datos ingresados en este formulario (Nacionalidad y Cédula).</p>
-                <p>Las consultas se realizan a través de un proxy serverless directamente hacia el proveedor de la API de origen. Las credenciales de acceso se mantienen cifradas en nuestro servidor.</p>
-                <p>Al utilizar el servicio, acepta que sus datos sean enviados temporalmente a través de nuestra infraestructura solo con el fin de consultar la fuente original.</p>
+            <div class="text-sm text-gray-600 max-h-60 overflow-y-auto mb-4 space-y-3">
+                <p>Esta plataforma actúa estrictamente como un proxy de consulta en tiempo real. <strong>No almacenamos, guardamos en bases de datos, compartimos ni comercializamos</strong> la información (Cédula/Nacionalidad) introducida ni los datos devueltos.</p>
+                <p>Las consultas se efectúan bajo encriptación HTTPS hacia el origen de forma anónima desde nuestros servidores <em>Serverless</em>, resguardando las credenciales secretas del proyecto.</p>
+                <p>Utilizamos <em>Cloudflare Turnstile</em> para validar que usted es humano. Su interacción con este sistema de Captcha está sujeta a la política de datos de Cloudflare orientada a la mitigación de fraudes.</p>
             </div>
             <button onclick="toggleModal('privacyModal')" class="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition">Entendido</button>
         </div>
