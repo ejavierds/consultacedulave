@@ -69,6 +69,7 @@
                             <p><span class="font-semibold text-gray-700">Nombres:</span> <span id="resNombres" class="text-gray-600"></span></p>
                             <p><span class="font-semibold text-gray-700">Apellidos:</span> <span id="resApellidos" class="text-gray-600"></span></p>
                             <p><span class="font-semibold text-gray-700">Cédula:</span> <span id="resCedula" class="text-gray-600"></span></p>
+                            <p><span class="font-semibold text-gray-700">F. de Nacimiento:</span> <span id="resFechaNac" class="text-gray-600"></span></p>
                             <p><span class="font-semibold text-gray-700">RIF:</span> <span id="resRif" class="text-gray-600"></span></p>
                         </div>
                     </div>
@@ -198,13 +199,22 @@
                 document.getElementById('resNombres').textContent = nombres;
                 document.getElementById('resApellidos').textContent = apellidos;
                 document.getElementById('resCedula').textContent = `${nacionalidad}-${cedula}`;
+                
+                // Formatear fecha de nacimiento si existe
+                let fechaNac = 'No disponible';
+                if (personal.fecha_nac) {
+                    const [year, month, day] = personal.fecha_nac.split('-');
+                    fechaNac = `${day}/${month}/${year}`;
+                }
+                document.getElementById('resFechaNac').textContent = fechaNac;
                 document.getElementById('resRif').textContent = personal.rif || 'No disponible';
 
-                // Rellenar Datos Electorales
-                document.getElementById('resEstado').textContent = personal.estado || 'No disponible';
-                document.getElementById('resMunicipio').textContent = personal.municipio || 'No disponible';
-                document.getElementById('resParroquia').textContent = personal.parroquia || 'No disponible';
-                document.getElementById('resCentro').textContent = personal.centroElectoral || personal.centro_electoral || 'No disponible';
+                // Rellenar Datos Electorales (CNE)
+                const cne = personal.cne || {};
+                document.getElementById('resEstado').textContent = cne.estado || 'No inscrito / No disponible';
+                document.getElementById('resMunicipio').textContent = cne.municipio || 'No inscrito / No disponible';
+                document.getElementById('resParroquia').textContent = cne.parroquia || 'No inscrito / No disponible';
+                document.getElementById('resCentro').textContent = cne.centroElectoral || cne.centro_electoral || 'No inscrito / No disponible';
 
                 // Mostrar Resultados
                 results.classList.remove('hidden');
