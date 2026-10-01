@@ -36,17 +36,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Construcción de la URL hacia el servicio externo
-    const apiUrl = `https://api.cedula.com.ve/api/v1?nacionalidad=${nacionalidad}&cedula=${cedula}`;
+    // La API externa requiere app_id y token en la URL (query string)
+    const apiUrl = `https://api.cedula.com.ve/api/v1?app_id=${appId}&token=${token}&nacionalidad=${nacionalidad}&cedula=${cedula}`;
     
     // Fetch interno protegido
     const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'app_id': appId,
-        'token': token
-      }
+      method: 'GET'
     });
 
     if (!response.ok) {
@@ -58,6 +53,11 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     
+    // api.cedula.com.ve retorna un status 200 pero con data.error = true si fallan las credenciales o no se encuentra
+    if (data.error) {
+       return res.status(400).json({ error: data.error_str || 'Error en la consulta (verifique credenciales o si la cédula existe).' });
+    }
+
     // Retornamos la data al cliente
     return res.status(200).json(data);
 
