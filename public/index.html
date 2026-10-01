@@ -268,14 +268,21 @@
                 results.classList.remove('hidden');
 
             } catch (error) {
-                // Generar un mensaje amigable según el tipo de error
+                // Generar un mensaje amigable y asignar un color/ícono según la severidad
                 let friendlyMessage = 'Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.';
+                let alertColor = 'red';
+                let iconSvg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+
                 const errorText = (error.message || '').toLowerCase();
                 
                 if (errorText.includes('captcha')) {
                     friendlyMessage = 'Por favor, verifica que eres humano marcando la casilla de seguridad.';
-                } else if (errorText.includes('no encontrada') || errorText.includes('existe') || errorText.includes('not found')) {
-                    friendlyMessage = 'No encontramos registros para esta cédula. Verifica que el número y la nacionalidad sean correctos.';
+                    alertColor = 'yellow';
+                    iconSvg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>';
+                } else if (errorText.includes('record_not_found') || errorText.includes('no encontrada')) {
+                    friendlyMessage = 'No encontramos a nadie registrado con esa cédula en el sistema. Verifica que la nacionalidad y los números sean correctos.';
+                    alertColor = 'blue';
+                    iconSvg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
                 } else if (errorText.includes('servidor') || errorText.includes('500') || errorText.includes('400')) {
                     friendlyMessage = 'El servicio origen está temporalmente inestable o rechazó la consulta. Intenta en unos minutos.';
                 } else if (errorText.includes('fetch') || errorText.includes('network')) {
@@ -284,10 +291,19 @@
                     friendlyMessage = error.message || 'No pudimos procesar tu solicitud.';
                 }
 
-                // Inyectar el mensaje con un icono SVG
+                // Configurar clases dinámicas según el color elegido
+                const bgClass = `bg-${alertColor}-50`;
+                const borderClass = `border-${alertColor}-500`;
+                const textClass = `text-${alertColor}-700`;
+                const iconColorClass = `text-${alertColor}-500`;
+
+                // Reemplazar todas las clases de color previas del contenedor
+                errorMessage.className = `hidden mt-4 p-4 ${bgClass} border-l-4 ${borderClass} rounded-r-lg ${textClass} text-sm animate-pulse`;
+
+                // Inyectar el mensaje con su icono dinámico
                 errorMessage.innerHTML = `
                     <div class="flex items-start">
-                        <svg class="w-5 h-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="w-5 h-5 ${iconColorClass} mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">${iconSvg}</svg>
                         <span class="font-medium">${friendlyMessage}</span>
                     </div>
                 `;
