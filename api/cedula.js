@@ -33,11 +33,10 @@ export default async function handler(req, res) {
   // Claves de entorno
   const appId = process.env.CEDULA_APP_ID;
   const token = process.env.CEDULA_TOKEN;
-  // Fallback a la clave estática si no está en las variables (aunque es mejor usar process.env)
-  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY || '0x4AAAAAAFLZ3PH1xtAm_ulNBWqyOdE9xfk';
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
 
-  if (!appId || !token) {
-    console.error('Faltan variables de entorno CEDULA_APP_ID o CEDULA_TOKEN');
+  if (!appId || !token || !turnstileSecret) {
+    console.error('Faltan variables de entorno: CEDULA_APP_ID, CEDULA_TOKEN o TURNSTILE_SECRET_KEY');
     return res.status(500).json({ error: 'Error de configuración del servidor interno.' });
   }
 
