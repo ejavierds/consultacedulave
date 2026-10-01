@@ -1,0 +1,12 @@
+{
+  "name": "consulta-cedula-ve",
+  "version": "1.0.0",
+  "description": "Proxy serverless para consulta de cedulas",
+  "type": "module",
+  "scripts": {
+    "start": "echo 'Run locally with vercel dev'"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
