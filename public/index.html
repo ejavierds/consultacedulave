@@ -11,17 +11,17 @@
 
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://consulta-cedula-ve.vercel.app/">
+    <meta property="og:url" content="https://consultacedulave.vercel.app/">
     <meta property="og:title" content="Consulta Cédula Venezuela">
     <meta property="og:description" content="Verifica datos personales y electorales de forma rápida y segura.">
-    <meta property="og:image" content="https://consulta-cedula-ve.vercel.app/icono.jpg">
+    <meta property="og:image" content="https://consultacedulave.vercel.app/icono.jpg">
 
     <!-- Twitter / X -->
     <meta property="twitter:card" content="summary">
-    <meta property="twitter:url" content="https://consulta-cedula-ve.vercel.app/">
+    <meta property="twitter:url" content="https://consultacedulave.vercel.app/">
     <meta property="twitter:title" content="Consulta Cédula Venezuela">
     <meta property="twitter:description" content="Verifica datos personales y electorales de forma rápida y segura.">
-    <meta property="twitter:image" content="https://consulta-cedula-ve.vercel.app/icono.jpg">
+    <meta property="twitter:image" content="https://consultacedulave.vercel.app/icono.jpg">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Script de Cloudflare Turnstile -->
@@ -126,11 +126,12 @@
 
     <footer class="bg-white border-t py-6 text-center text-sm text-gray-500 mt-auto">
         <div class="flex justify-center space-x-4 mb-2">
-            <button onclick="toggleModal('termsModal')" class="hover:text-blue-700 underline">Términos de Uso</button>
-            <button onclick="toggleModal('privacyModal')" class="hover:text-blue-700 underline">Política de Privacidad</button>
-            <a href="/GPL.md" target="_blank" class="hover:text-blue-700 underline">Licencia GPL</a>
+            <button onclick="toggleModal('termsModal')" class="hover:text-blue-700 underline transition">Términos</button>
+            <button onclick="toggleModal('privacyModal')" class="hover:text-blue-700 underline transition">Privacidad</button>
+            <button onclick="toggleModal('legalModal')" class="hover:text-blue-700 underline font-semibold transition">Aviso Legal</button>
+            <a href="/GPL.md" target="_blank" class="hover:text-blue-700 underline transition">Licencia GPLv3</a>
         </div>
-        <p>&copy; 2026 Consulta Segura. Todos los derechos reservados.</p>
+        <p>&copy; 2026 Consulta Segura. Distribuido como Software Libre bajo la Licencia GNU GPLv3.</p>
         <p class="mt-2 text-xs">Diseñado y desarrollado por <a href="https://ejavierds.vercel.app" target="_blank" class="text-blue-600 hover:text-blue-800 hover:underline font-bold">@ejavierds</a></p>
     </footer>
 
@@ -166,6 +167,44 @@
                 <p>Utilizamos <em>Cloudflare Turnstile</em> para validar que usted es humano. Su interacción con este sistema de Captcha está sujeta a la política de datos de Cloudflare orientada a la mitigación de fraudes.</p>
             </div>
             <button onclick="toggleModal('privacyModal')" class="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Aviso Legal Modal -->
+    <div id="legalModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Aviso y Responsabilidad Legal</h2>
+                <button onclick="toggleModal('legalModal')" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="text-sm text-gray-600 max-h-[60vh] overflow-y-auto mb-4 space-y-4 pr-2">
+                <div>
+                    <h3 class="font-bold text-gray-800">Responsabilidad Legal</h3>
+                    <p class="mt-1">Según lo dispuesto en la <strong>Ley Orgánica de Registro Civil</strong> en sus artículos 6 y 59, la información contenida en el Registro Civil es de carácter público. Por ello, es posible acceder a datos generales en páginas gubernamentales mediante el número de documento de identidad (cédula).</p>
+                    <p class="mt-1">Nuestra plataforma (frontend) funciona exclusivamente como una interfaz de Código Abierto (GPLv3) para facilitar el acceso a la API externa gestionada por <em>cedula.com.ve</em>. Está orientada a incentivar la investigación, el desarrollo tecnológico y la transparencia de los Datos Abiertos.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800">Independencia Operativa</h3>
+                    <p class="mt-1">Somos desarrolladores informáticos <strong>independientes y autónomos</strong>, sin ningún tipo de vinculación con el gobierno de la República Bolivariana de Venezuela, el CNE ni el SAIME. Resulta técnicamente imposible para nosotros alterar, modificar o hackear los sistemas electrónicos gubernamentales.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800">Privacidad y Exclusión de Datos</h3>
+                    <p class="mt-1">Aunque los datos consultados son estrictamente públicos por ley, entendemos el derecho a la privacidad. Dado que nosotros no controlamos las bases de datos origen, si usted no desea que su información aparezca en las respuestas de la API, puede solicitar la eliminación de su perfil directamente al proveedor de origen de forma gratuita e inmediata en el siguiente enlace:</p>
+                    <a href="http://cedula.com.ve/web/salir_sistema.php" target="_blank" class="text-blue-600 hover:underline block mt-1">Excluir mis datos públicos del sistema de origen &rarr;</a>
+                    <p class="mt-2 text-xs text-gray-500">Nota: Esta exclusión aplica únicamente a la API de terceros que consultamos. No afecta la visibilidad legal de sus datos en las instituciones gubernamentales oficiales, ya que es ilegal ocultar a un ciudadano del registro civil venezolano.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800">Base Legal (Ley del Registro Civil)</h3>
+                    <ul class="list-disc pl-5 mt-1 space-y-1">
+                        <li><strong>Art. 60 (Protección a NNA):</strong> Los asientos sobre filiación son confidenciales y exclusivos para padres/representantes o autoridades judiciales.</li>
+                        <li><strong>Art. 61 (Medidas de protección):</strong> Será confidencial la información de personas bajo amenaza a su vida/integridad, testigos o víctimas, según dicten los órganos competentes.</li>
+                    </ul>
+                    <a href="https://www.acnur.org/fileadmin/Documentos/BDL/2015/10005.pdf" target="_blank" class="text-blue-600 hover:underline block mt-2 text-xs">Leer Ley Orgánica de Registro Civil completa</a>
+                </div>
+            </div>
+            <button onclick="toggleModal('legalModal')" class="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition">Entendido</button>
         </div>
     </div>
 
